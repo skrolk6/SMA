@@ -1,0 +1,2 @@
+# SMA
+Simple Moving Average
