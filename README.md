@@ -1,2 +1,2 @@
 # SMA
-Simple Moving Average
+Implementation of simple moving average(SMA) algorithm.
