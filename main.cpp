@@ -5,8 +5,6 @@
 using namespace std::chrono;
 
 constexpr int DATA_SIZE = 1000000;
-constexpr int LOWER_BOUND = 0;
-constexpr int UPPER_BOUND = 1000000;
 
 template<class T>
 void calculateSMA(const std::vector<T>& data, std::vector<T>& result, size_t window);
