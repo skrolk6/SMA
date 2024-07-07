@@ -21,23 +21,25 @@ int main()
     std::cout << std::setprecision(2);
 
     std::vector<size_t> window_widths = { 4, 8, 16, 32, 64, 128 };
+    auto float_data = generateRandomData<float>(engine);
     std::cout << "Perfomance for float:" << std::endl;
     for (size_t width : window_widths)
     {
         std::vector<float> float_results(DATA_SIZE);
         auto start = high_resolution_clock::now();
-        calculateSMA(generateRandomData<float>(engine), float_results, width);
+        calculateSMA(float_data, float_results, width);
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<milliseconds>(stop - start);
         std::cout << "Window width " << width << ": " << (DATA_SIZE / (float)duration.count()) * 1000 << std::endl;
     }
 
+    auto double_data = generateRandomData<double>(engine);
     std::cout << "Perfomance for double:" << std::endl;
     for (size_t width : window_widths)
     {
         std::vector<double> double_results(DATA_SIZE);
         auto start = high_resolution_clock::now();
-        calculateSMA(generateRandomData<double>(engine), double_results, width);
+        calculateSMA(double_data, double_results, width);
         auto stop = high_resolution_clock::now();
         auto duration = duration_cast<milliseconds>(stop - start);
         std::cout << "Window width " << width << ": " << (DATA_SIZE / (float)duration.count()) * 1000 << std::endl;
