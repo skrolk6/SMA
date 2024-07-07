@@ -1,7 +1,9 @@
 #include <iostream>
 #include <random>
+#include <chrono>
+using namespace std::chrono;
 
-constexpr int DATA_SIZE = 100;
+constexpr int DATA_SIZE = 1000000;
 constexpr int LOWER_BOUND = 0;
 constexpr int UPPER_BOUND = 10000;
 
@@ -20,18 +22,34 @@ int main()
 {
     std::random_device random_device;
     std::mt19937 engine(random_device());
-    std::vector<float> float_results(DATA_SIZE);
-    calculateSMA(generateRandomData<float>(engine), float_results, window_width);
 
-    std::vector<double> double_results(DATA_SIZE);
-    calculateSMA(generateRandomData<double>(engine), double_results, window_width);
+    std::vector<size_t> window_widths = { 4, 8, 16, 32, 64, 128 };
+    std::cout << "Perfomance for float:" << std::endl;
+    for (size_t width : window_widths)
+    {
+        std::vector<float> float_results(DATA_SIZE);
+        auto start = high_resolution_clock::now();
+        calculateSMA(generateRandomData<float>(engine), float_results, width);
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<milliseconds>(stop - start);
+        std::cout << "Window width " << width << ": " << std::fixed << (DATA_SIZE / (float)duration.count()) * 1000 << std::endl;
+    }
+
+    std::cout << "Perfomance for float:" << std::endl;
+    for (size_t width : window_widths)
+    {
+        std::vector<double> double_results(DATA_SIZE);
+        auto start = high_resolution_clock::now();
+        calculateSMA(generateRandomData<double>(engine), double_results, width);
+        auto stop = high_resolution_clock::now();
+        auto duration = duration_cast<milliseconds>(stop - start);
+        std::cout << "Window width " << width << ": " << std::fixed << (DATA_SIZE / (float)duration.count()) * 1000 << std::endl;
+    }
 
     std::vector<float> src_data = { 2, 4, 6, 8, 12, 14, 16, 18, 20 };
-    std::vector<float> sma_result;
-    std::vector<size_t> window_widths = { 4, 8, 16, 32, 64, 128 };
-    //calculateSMA(src_data, sma_result, width);
-    print_vector(float_results);
-    print_vector(double_results);
+    std::vector<float> sma_result(src_data.size());
+    calculateSMA(src_data, sma_result, window_width);
+    print_vector(sma_result);
 
     return 0;
 }
